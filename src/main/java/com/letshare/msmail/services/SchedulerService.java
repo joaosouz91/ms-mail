@@ -31,7 +31,7 @@ public class SchedulerService {
 
         notifyIsRunning();
 
-        var pageable = PageRequest.of(0, 1);
+        var pageable = PageRequest.of(0, 20);
         var emails = emailService.findAllPending(pageable);
         emailService.send(emails);
 
