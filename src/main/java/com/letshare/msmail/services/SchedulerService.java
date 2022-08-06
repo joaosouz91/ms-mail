@@ -26,7 +26,7 @@ public class SchedulerService {
     private final SchedulerRepository schedulerRepository;
     private final EmailService emailService;
 
-    @Scheduled(fixedRate = 1000)
+    @Scheduled(fixedRate = 5000)
     public void run() {
 
         notifyIsRunning();
@@ -35,6 +35,7 @@ public class SchedulerService {
         var emails = emailService.findAllPending(pageable);
         emailService.send(emails);
 
+        // simulating a delay of 10 seconds to finish the whole process
         try {
             Thread.sleep(10000);
         } catch (InterruptedException e) {
@@ -64,12 +65,13 @@ public class SchedulerService {
                 .build());
     }
 
-    /*
+    // not going to be used
+    @Deprecated
     private boolean isRunning() {
         var isRunning = new AtomicBoolean(false);
         schedulerRepository.findByKey("scheduler").ifPresent(scheduler -> isRunning.set(scheduler.isRunning()));
         return isRunning.get();
-    } */
+    }
 
 
 }
