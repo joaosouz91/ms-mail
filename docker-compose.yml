@@ -1,0 +1,28 @@
+version: '3.9'
+networks:
+  ms-network:
+services:
+  db:
+    image: postgres:13-alpine
+    environment:
+      POSTGRES_DB: ms-mail
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 12345
+    ports:
+      - "15432:5432"
+    networks:
+      - ms-network
+  ms-mail:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ms-mail:latest
+    ports:
+      - "8080:8080"
+    networks:
+      - ms-network
+    deploy:
+      replicas: 1
+    depends_on:
+      db:
+        condition: service_started
