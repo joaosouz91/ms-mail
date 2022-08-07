@@ -2,9 +2,7 @@
 
 exec application:
 
-    1) docker-compose build
-
-    2) docker-compose up -d
+    ./mvnw clean install package -DskipTests && docker-compose up --build
 
 send email:
 

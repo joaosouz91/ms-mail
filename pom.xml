@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.letshare</groupId>
     <artifactId>ms-mail</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0</version>
     <name>ms-mail</name>
     <description>ms-mail</description>
     <properties>
