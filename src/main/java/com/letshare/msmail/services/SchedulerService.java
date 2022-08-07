@@ -1,16 +1,20 @@
 package com.letshare.msmail.services;
 
 import com.letshare.msmail.domain.entities.Scheduler;
+import com.letshare.msmail.domain.enums.Status;
 import com.letshare.msmail.repositories.SchedulerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
+
+import static com.letshare.msmail.utils.Utils.longStream;
 
 /**
  * @author Joao Victor
@@ -26,20 +30,29 @@ public class SchedulerService {
     private final SchedulerRepository schedulerRepository;
     private final EmailService emailService;
 
-    @Scheduled(fixedRate = 5000)
+    @Value("${page.size}")
+    private Integer pageSize;
+
+    @Scheduled(fixedRate = 20000)
     public void run() {
 
         notifyIsRunning();
 
-        var pageable = PageRequest.of(0, 20);
-        var emails = emailService.findAllPending(pageable);
-        emailService.send(emails);
+        var pendingCount = emailService.countByStatus(Status.PENDING);
 
-        // simulating a delay of 10 seconds to finish the whole process
-        try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        if (pendingCount > 0) {
+
+            var numberOfPages = (pendingCount / pageSize) + (pendingCount % pageSize > 0 ? 1 : 0);
+
+            var pages = longStream(0L, numberOfPages)
+                    .stream()
+                    .map(i -> PageRequest.of(i.intValue(), pageSize))
+                    .collect(Collectors.toSet());
+
+            pages.forEach(page -> {
+                var emails = emailService.findAllPending(page);
+                emailService.send(emails);
+            });
         }
 
         notifyIsStopped();
@@ -64,14 +77,5 @@ public class SchedulerService {
                 .isRunning(false)
                 .build());
     }
-
-    // not going to be used
-    @Deprecated
-    private boolean isRunning() {
-        var isRunning = new AtomicBoolean(false);
-        schedulerRepository.findByKey("scheduler").ifPresent(scheduler -> isRunning.set(scheduler.isRunning()));
-        return isRunning.get();
-    }
-
 
 }

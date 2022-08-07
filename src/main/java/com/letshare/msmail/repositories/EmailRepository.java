@@ -19,4 +19,6 @@ import java.util.Set;
 public interface EmailRepository extends JpaRepository<Email, Long> {
 
     List<Email> findByStatus(Status status, Pageable pageable);
+
+    Long countByStatus(Status status);
 }

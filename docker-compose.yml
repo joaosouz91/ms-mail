@@ -17,6 +17,8 @@ services:
       context: .
       dockerfile: Dockerfile
     image: ms-mail:latest
+    environment:
+      - "SPRING_PROFILES_ACTIVE=docker"
     ports:
       - "8080:8080"
     networks:

@@ -66,4 +66,8 @@ public class EmailService {
         return emailRepository.findByStatus(Status.PENDING, pageable);
     }
 
+    public Long countByStatus(Status status) {
+        return emailRepository.countByStatus(status);
+    }
+
 }
