@@ -26,7 +26,7 @@ public class EmailResource {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<EmailDto> sendEmail(@RequestBody @Valid EmailDto dto) {
+    public ResponseEntity<EmailDto> registerEmail(@RequestBody @Valid EmailDto dto) {
         emailService.register(dto);
         return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }

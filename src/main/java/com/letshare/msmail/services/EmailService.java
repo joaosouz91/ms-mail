@@ -61,7 +61,6 @@ public class EmailService {
         });
     }
 
-    // Must be implemented recursively to fetch all pending emails till the end of the list.
     public List<Email> findAllPending(Pageable pageable) {
         return emailRepository.findByStatus(Status.PENDING, pageable);
     }
