@@ -1,0 +1,44 @@
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm" version="2.0">
+
+    <access>FIELD</access>
+
+    <entity class="com.letshare.msmail.domain.entities.Email">
+        <table name="tbl_email"/>
+        <attributes>
+            <id name="id"/>
+            <basic name="ownerRef">
+                <column nullable="false"/>
+            </basic>
+            <basic name="emailFrom">
+                <column nullable="false"/>
+            </basic>
+            <basic name="emailTo">
+                <column nullable="false"/>
+            </basic>
+            <basic name="subject">
+                <column nullable="false"/>
+            </basic>
+            <basic name="text">
+                <column nullable="false" column-definition="text"/>
+            </basic>
+            <basic name="sentDate">
+            </basic>
+            <basic name="status">
+                <enumerated>STRING</enumerated>
+            </basic>
+        </attributes>
+    </entity>
+
+    <entity class="com.letshare.msmail.domain.entities.Scheduler">
+        <table name="tbl_scheduler"/>
+        <attributes>
+            <id name="key"/>
+            <basic name="lastExecutionStart">
+            </basic>
+            <basic name="isRunning">
+                <column nullable="false" column-definition="boolean default false"/>
+            </basic>
+        </attributes>
+    </entity>
+
+</entity-mappings>

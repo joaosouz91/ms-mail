@@ -5,8 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Column;
 import java.time.LocalDateTime;
+
+import static com.letshare.msmail.utils.IdSupplier.generateId;
 
 /**
  * @author Joao Victor
@@ -17,29 +19,16 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name = "tbl_email")
 public class Email {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+    private String id = generateId();
     private String ownerRef;
-
     private String emailFrom;
-
     private String emailTo;
-
     private String subject;
-
-    @Column(columnDefinition = "text")
     private String text;
-
     private LocalDateTime sentDate;
-
     private Status status;
-
 
 }
 

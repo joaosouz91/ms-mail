@@ -5,10 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.time.LocalDateTime;
+
+import static com.letshare.msmail.utils.IdSupplier.generateId;
 
 /**
  * @author Joao Victor
@@ -20,14 +19,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Data
 @Builder
-@Entity
-@Table(name = "tbl_scheduler")
 public class Scheduler {
 
-    @Id
-    private String key;
-
+    private String key = generateId();
     private LocalDateTime lastExecutionStart;
-
     private boolean isRunning;
 }
