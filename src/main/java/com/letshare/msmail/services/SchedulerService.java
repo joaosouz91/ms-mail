@@ -72,10 +72,9 @@ public class SchedulerService {
     }
 
     private void notifyIsStopped() {
-        schedulerRepository.save(Scheduler.builder()
-                .key("email_scheduler")
-                .isRunning(false)
-                .build());
+        schedulerRepository.findByKey("email_scheduler").ifPresent(scheduler -> {
+            scheduler.setRunning(false);
+            schedulerRepository.save(scheduler);
+        });
     }
-
 }
